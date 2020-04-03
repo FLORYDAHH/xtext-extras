@@ -22,7 +22,7 @@ spec:
     - mountPath: /home/jenkins/.ssh
       name: volume-known-hosts
   - name: xtext-buildenv
-    image: docker.io/smoht/xtext-buildenv:0.7
+    image: docker.io/christiandietrich/xtext-buildenv:latest
     tty: true
     resources:
       limits:
@@ -83,7 +83,15 @@ spec:
     }
 
     stage('Gradle Build') {
+      environment {
+        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-11.0.5.10-0.fc29.x86_64" // i would like to set JAVA_HOME to $JAVA_11_HOME but i cannot figure out
+        JAVA_HOME2 = "$JAVA_11_HOME"
+      }
       steps {
+        env.DEMO = "$JAVA_11_HOME"
+        sh 'echo $JAVA_HOME'
+        sh 'echo $JAVA_HOME2'
+        sh 'echo $DEMO'
         sh './1-gradle-build.sh'
       }
     }
